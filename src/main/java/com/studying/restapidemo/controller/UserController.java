@@ -1,64 +1,64 @@
 package com.studying.restapidemo.controller;
 
-import com.studying.restapidemo.model.common.User;
+import com.studying.restapidemo.model.common.Account;
 import com.studying.restapidemo.model.response.Response;
-import com.studying.restapidemo.service.UserService;
+import com.studying.restapidemo.service.AccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping( "user")
+@Slf4j
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private AccountService accountService;
 
-    @PostMapping("login")
-    public Response<User> login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
-        Response<User> response = new Response();
+    @PostMapping("/add")
+    public Response<Account> add(
+            @RequestParam("name") String name,
+            @RequestParam("username") String username,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("phone") String phone,
+            @RequestParam("image") String image,
+            @RequestParam("type") String type
+    ){
+        log.info("===========> add account");
+        Account account = convertToAccount(name, username, email, password, phone, image, type);
 
-        User user = userService.login(username, password);
-        if(user != null){
+        Account accountInserted = accountService.add(account);
+
+        Response<Account> response = new Response<>();
+
+        if(accountInserted != null){
             response.setCode(0);
-            response.setMessage("Thanh cong");
-            response.setData(user);
+            response.setMessage("save account success");
+            response.setData(accountInserted);
         } else {
             response.setCode(1);
-            response.setMessage("Khong thanh cong");
+            response.setMessage("save account fail");
         }
 
         return response;
     }
 
-    @PostMapping("add")
-    public Response<User> add(@RequestBody User user){
-        System.out.println("username: " + user.getUsername());
+    private Account convertToAccount(
+            String name, String username, String email, String password, String phone, String image, String type
+    ){
+        Account account = new Account();
+        account.setName(name);
+        account.setUsername(username);
+        account.setEmail(email);
+        account.setPassword(password);
+        account.setPhone(phone);
+        account.setImage(image);
+        account.setType(type);
 
-        // add user to database
-
-        //if add user success return response
-        Response<User> response = new Response<>();
-        response.setCode(0);
-        response.setMessage("adding user success");
-        response.setData(user);
-
-        return response;
-    }
-
-    @GetMapping("delete/{id}")
-    public Response delete(@PathVariable("id") int id){
-        System.out.println("id: " + id);
-
-        //delete user by id in service
-
-        // if delete success return response
-        Response response = new Response();
-        response.setCode(0);
-        response.setMessage("success");
-
-        return response;
+        return account;
     }
 }
