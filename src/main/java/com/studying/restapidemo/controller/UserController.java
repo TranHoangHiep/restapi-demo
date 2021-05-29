@@ -5,10 +5,9 @@ import com.studying.restapidemo.model.response.Response;
 import com.studying.restapidemo.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping( "user")
@@ -61,4 +60,40 @@ public class UserController {
 
         return account;
     }
+
+
+    //DELETE
+    @DeleteMapping("/delete/{id}")
+    public Response<Account> delete(@PathVariable ("id") long id){
+        Response<Account> response = new Response<>();
+       boolean check = accountService.delete(id);
+       if(check){
+           response.setCode(0);
+           response.setMessage("delete success");
+
+       }else {
+           response.setCode(1);
+           response.setMessage("delete fail");
+       }
+       return response;
+    }
+
+    //UPDATE
+    @PutMapping("update")
+    public Response<Account> update(@RequestBody Account account){
+        Response<Account> response = new Response<>();
+
+        Account accountUpdated = accountService.update(account);
+        if(accountUpdated != null){
+            response.setCode(0);
+            response.setMessage("update success");
+            response.setData(accountUpdated);
+        } else {
+            response.setCode(1);
+            response.setMessage("update fail");
+        }
+
+        return response;
+    }
+
 }

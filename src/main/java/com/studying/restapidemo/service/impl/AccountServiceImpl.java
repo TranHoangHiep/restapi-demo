@@ -25,4 +25,29 @@ public class AccountServiceImpl implements AccountService {
 
         return accountInserted;
     }
+
+    @Override
+    public boolean delete(long id) {
+        try {
+            accountRepo.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            log.error("can't delete!");
+            return false;
+        }
+    }
+
+    @Override
+    public Account update(Account account) {
+        Account accountUpdated = null;
+        try {
+            accountUpdated = accountRepo.save(account);
+        } catch (Exception ex){
+            log.error("update account fail");
+        }
+
+        return accountUpdated;
+    }
+
+
 }
