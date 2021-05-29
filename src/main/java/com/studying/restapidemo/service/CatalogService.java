@@ -10,4 +10,6 @@ public interface CatalogService {
     Boolean delete(Long id);
 
     Catalog update(Catalog catalog);
+
+    Catalog getById(Long id);
 }

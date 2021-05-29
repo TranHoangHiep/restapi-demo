@@ -3,6 +3,7 @@ package com.studying.restapidemo.model.common;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "account")

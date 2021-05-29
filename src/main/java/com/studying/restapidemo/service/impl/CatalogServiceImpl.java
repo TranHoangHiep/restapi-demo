@@ -45,4 +45,16 @@ public class CatalogServiceImpl implements CatalogService {
         }
         return catalogUpdate;
     }
+
+    @Override
+    public Catalog getById(Long id) {
+        Catalog catalog = null;
+        try {
+            catalog = catalogRepo.getOne(id);
+        }catch (Exception ex){
+            log.error("Get Catalog fail");
+        }
+
+        return catalog;
+    }
 }

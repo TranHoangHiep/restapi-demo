@@ -66,4 +66,14 @@ public class CatalogController{
         }
         return response;
     }
+
+    @GetMapping("/{id}")
+    public Response<Catalog> getById(@PathVariable("id") long id){
+        Response<Catalog> response = new Response<>();
+        Catalog catalog = catalogService.getById(id);
+        response.setCode(0);
+        response.setMessage("Get Catalog success");
+        response.setData(catalog);
+        return response;
+    }
 }
