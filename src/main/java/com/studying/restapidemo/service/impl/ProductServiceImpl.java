@@ -24,7 +24,6 @@ public class ProductServiceImpl implements ProductService {
         Product productInserted = null;
         try {
             Catalog catalog = catalogRepo.getOne(catalogId);
-            log.info("catalog: " + catalog.toString());
 
             Product product = new Product();
             product.setName(name);
