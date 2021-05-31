@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,4 +28,7 @@ public class Product implements Serializable{
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Catalog catalog;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders;
 }
